@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>dopamine — a macOS browser with panes, spaces, files, and a terminal</title>
+<meta name="description" content="dopamine is a macOS desktop browser built on gpui. Split a space into web pages, a terminal, a file browser, and RSS. Apple Silicon, macOS 14+.">
+<link rel="icon" href="./assets/favicon.png" sizes="64x64">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+<meta property="og:title" content="dopamine">
+<meta property="og:description" content="A macOS desktop browser built on gpui — split a space into web pages, a terminal, a file browser, and RSS.">
+<meta property="og:image" content="https://route23.github.io/dopamine-releases/assets/dopamine.png">
+<meta property="og:url" content="https://route23.github.io/dopamine-releases/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="./assets/styles.css">
+<script src="./assets/app.js" defer></script>
+</head>
+<body>
+
+<main class="wrap">
+
+  <header class="hero">
+    <img class="hero__icon" src="./assets/dopamine.png" width="512" height="512" alt="">
+    <h1>dopamine<span class="chip chip--beta">beta</span></h1>
+    <p class="hero__tagline">
+      A macOS desktop browser built on gpui. Split a space into web pages, a
+      terminal, a file browser, and RSS — then keep them all on screen at once.
+    </p>
+  </header>
+
+  <!--
+    ダウンロードリンクは **ここに書いてある状態で既に動く**。
+    assets/app.js は href とラベルを上書きするだけで、失敗しても
+    このリンクはそのまま残る（JS 無効・レート制限・オフラインでも押せる）。
+  -->
+  <div class="download">
+    <a id="download-primary" class="btn-primary"
+       href="https://github.com/Route23/dopamine-releases/releases/latest">
+      Download for macOS
+    </a>
+    <p id="download-meta" class="download__meta"></p>
+    <p class="status" data-degraded-note hidden>
+      Couldn’t load release details from GitHub right now — the download link above still works.
+    </p>
+  </div>
+
+  <section class="shots">
+    <figure>
+      <img src="./assets/shots/panes.webp" width="2400" height="1500" loading="eager" decoding="async"
+           alt="A dopamine window split into three panes: a web page showing rust-lang.org on the left, and on the right a file browser listing a Notes folder stacked above a terminal running a shell.">
+      <figcaption>One space, three panes — a page, a file browser, and a shell, all on screen at once.</figcaption>
+    </figure>
+    <figure>
+      <img src="./assets/shots/mission-control.webp" width="1800" height="1125" loading="lazy" decoding="async"
+           alt="Mission Control in dopamine: two space cards side by side, each rendering a live miniature of its own pane layout.">
+      <figcaption>Mission Control renders every space as a live miniature of its own layout.</figcaption>
+    </figure>
+  </section>
+
+  <h2>Install with Homebrew</h2>
+  <div class="cmd">
+    <pre><code>brew install --cask Route23/tap/dopamine</code></pre>
+    <button type="button" class="cmd__copy">Copy</button>
+  </div>
+  <p class="small muted">The cask clears the quarantine flag for you.</p>
+
+  <h2>First launch from the <code>.dmg</code></h2>
+  <div class="card callout">
+    <p>
+      dopamine is signed ad-hoc, <b>not notarized by Apple</b>. If you install
+      from the <code>.dmg</code>, macOS will refuse to open it the first time.
+      Run this once, then open the app:
+    </p>
+    <div class="cmd">
+      <pre><code>xattr -dr com.apple.quarantine /Applications/dopamine.app</code></pre>
+      <button type="button" class="cmd__copy">Copy</button>
+    </div>
+    <p class="small muted" style="margin-top:1em;margin-bottom:0">
+      Installing with Homebrew does this for you.
+    </p>
+  </div>
+
+  <h2>Requirements</h2>
+  <ul class="reqs">
+    <li><b>macOS 14 (Sonoma)</b> or later</li>
+    <li><b>Apple Silicon</b> (arm64) only — there is no Intel build</li>
+  </ul>
+
+  <footer class="site-footer">
+    <a href="./releases.html">All releases</a>
+    <a href="https://github.com/Route23/dopamine-issues/issues">Report a bug</a>
+    <a href="https://github.com/Route23/dopamine-releases">GitHub</a>
+  </footer>
+
+</main>
+
+</body>
+</html>

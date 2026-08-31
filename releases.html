@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Releases — dopamine</title>
+<meta name="description" content="Every dopamine release, newest first, with its release notes and a download link.">
+<link rel="icon" href="./assets/favicon.png" sizes="64x64">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+<link rel="stylesheet" href="./assets/styles.css">
+<script src="./assets/app.js" defer></script>
+</head>
+<body>
+
+<nav class="topnav"><a href="./">← dopamine</a></nav>
+
+<main class="wrap wrap--wide">
+  <h1>Releases</h1>
+  <p class="muted">Every build, newest first. macOS 14+, Apple Silicon.</p>
+
+  <!--
+    JS が動かなくても、レート制限でも、ここが残って GitHub の一覧へ行ける。
+    app.js は成功したときだけこれを隠して #releases-list を埋める。
+  -->
+  <p id="releases-fallback" class="status" hidden>
+    Couldn’t load the release list from GitHub right now.
+    <a href="https://github.com/Route23/dopamine-releases/releases">See all releases on GitHub</a>.
+  </p>
+  <noscript>
+    <p class="status">
+      <a href="https://github.com/Route23/dopamine-releases/releases">See all releases on GitHub</a>.
+    </p>
+  </noscript>
+
+  <ol id="releases-list" class="releases" reversed></ol>
+
+  <footer class="site-footer">
+    <a href="./">Home</a>
+    <a href="https://github.com/Route23/dopamine-issues/issues">Report a bug</a>
+    <a href="https://github.com/Route23/dopamine-releases">GitHub</a>
+  </footer>
+</main>
+
+</body>
+</html>
