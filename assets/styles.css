@@ -147,7 +147,7 @@ p  { margin: 0 0 1em; }
 }
 .cmd__copy:hover { background: var(--hover); color: var(--fg); }
 
-/* ── cards / callouts ────────────────────────────────────────────────── */
+/* ── cards ───────────────────────────────────────────────────────────── */
 
 .card {
   background: var(--surface);
@@ -158,8 +158,6 @@ p  { margin: 0 0 1em; }
 .card h2, .card h3 { margin-top: 0; }
 /* カードの中の二次テキストは --muted-fg。--dim-fg は --surface 上で AA に届かない。 */
 .card .muted { color: var(--muted-fg); }
-
-.callout { border-inline-start: 3px solid var(--accent); }
 
 /* ── screenshots ─────────────────────────────────────────────────────── */
 
