@@ -162,7 +162,6 @@ p  { margin: 0 0 1em; }
 /* ── screenshots ─────────────────────────────────────────────────────── */
 
 .shots { display: grid; gap: 20px; margin-block: 1.5rem; }
-.shots--pair { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 figure { margin: 0; }
 figure img {
   display: block;
