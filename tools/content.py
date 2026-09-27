@@ -7,8 +7,9 @@ HTML は英語だけで完結し（JS 無効でも読める）、i18n.js が ja 
 
 # (key, en, ja)
 UI = [
-    ("tagline", "A macOS browser that is also a terminal, a file manager and a code editor — split one window into all of them and keep them on screen together.",
-                "ブラウザで、ターミナルで、ファイルマネージャーで、コードエディタ。1 つの窓をペインに割って、全部を同時に並べておける macOS のブラウザ。"),
+    ("tagline", "A browser, a terminal, a file manager and a code editor in one macOS window. Split it into panes, keep everything on screen, and stop switching apps.",
+                "ブラウザ、ターミナル、ファイルマネージャー、コードエディタを 1 つの macOS の窓に。ペインに割って全部を並べておけば、もうアプリを行き来しなくていい。"),
+    ("slogan.sub", "Everything you work with, side by side, in one window.", "仕事の道具を全部、1 つの窓に並べて。"),
     ("spec", "Apple Silicon · macOS 14+ · 33 themes · 12 languages · no account",
              "Apple Silicon · macOS 14 以降 · テーマ 33 種 · 12 言語 · アカウント不要"),
     ("download", "Download for macOS", "macOS 版をダウンロード"),
@@ -60,13 +61,13 @@ HEADS = [
 
 # スクショ: (file, en caption, ja caption, big?)
 SHOTS = [
-    ("workspace", "One window, four panes: a web page, the editor with git marks and a Run lens, a terminal, and Files.",
-                  "1 つの窓に 4 つのペイン。Web ページ、git の印と Run のレンズが付いたエディタ、ターミナル、Files。", True),
-    ("source-control", "Source control in the sidebar: changes, a commit box, and the branch graph.",
-                       "サイドバーのソース管理。変更の一覧、コミット欄、枝のグラフ。", False),
-    ("diff", "Diff pane, side by side, with the file’s line numbers and unchanged lines folded away.",
-             "差分ペイン。左右に並べ、ファイルの行番号を出し、変わっていない行は畳む。", False),
-    ("files-rss", "Files in gallery view next to an RSS pane.", "ギャラリー表示の Files と、RSS ペイン。", False),
+    ("workspace", "One window, no switching: the file tree, a web page, a terminal, the editor with git marks and a Run lens, and Files.",
+                  "窓は 1 つ、行き来はゼロ。ファイルツリー、Web ページ、ターミナル、git の印と Run のレンズが付いたエディタ、Files。", True),
+    ("source-control", "Source control in the sidebar: staged and unstaged changes, a commit box, and the branch graph — next to the terminal’s git log.",
+                       "サイドバーのソース管理。ステージ済みと未ステージの変更、コミット欄、枝のグラフ。横のターミナルには git log。", False),
+    ("diff", "Diff pane, side by side: the file’s line numbers, word-level changes, and unchanged lines folded away.",
+             "差分ペイン。左右に並べ、ファイルの行番号と語単位の差を出し、変わっていない行は畳む。", False),
+    ("files-rss", "The file tree, Files in gallery view, and an RSS pane reading two feeds.", "ファイルツリー、ギャラリー表示の Files、2 つのフィードを読む RSS ペイン。", False),
     ("settings-themes", "Settings live in their own window. 33 themes, picked from pictures.", "設定は別の窓。テーマ 33 種を絵から選ぶ。", False),
     ("settings-editor", "Every setting is a card with its settings.json key and a live sample.", "設定は 1 つずつカードで、settings.json の鍵と実寸の見本付き。", False),
     ("settings-filter", "Filter across every section; pictures instead of dropdowns.", "全区分をまたいで絞り込み。選択肢は絵で選ぶ。", False),

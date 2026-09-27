@@ -1,7 +1,8 @@
 /* 生成物（tools/gen.py）。手で直さない。文言は tools/content.py。 */
 window.DOPAMINE_I18N = {
  "en": {
-  "tagline": "A macOS browser that is also a terminal, a file manager and a code editor — split one window into all of them and keep them on screen together.",
+  "tagline": "A browser, a terminal, a file manager and a code editor in one macOS window. Split it into panes, keep everything on screen, and stop switching apps.",
+  "slogan.sub": "Everything you work with, side by side, in one window.",
   "spec": "Apple Silicon · macOS 14+ · 33 themes · 12 languages · no account",
   "download": "Download for macOS",
   "degraded": "Couldn’t load release details from GitHub right now — the download link above still works.",
@@ -36,10 +37,10 @@ window.DOPAMINE_I18N = {
   "rel.onGithub": "See all releases on GitHub",
   "rel.pre": "pre-release",
   "home": "Home",
-  "shot.workspace": "One window, four panes: a web page, the editor with git marks and a Run lens, a terminal, and Files.",
-  "shot.source-control": "Source control in the sidebar: changes, a commit box, and the branch graph.",
-  "shot.diff": "Diff pane, side by side, with the file’s line numbers and unchanged lines folded away.",
-  "shot.files-rss": "Files in gallery view next to an RSS pane.",
+  "shot.workspace": "One window, no switching: the file tree, a web page, a terminal, the editor with git marks and a Run lens, and Files.",
+  "shot.source-control": "Source control in the sidebar: staged and unstaged changes, a commit box, and the branch graph — next to the terminal’s git log.",
+  "shot.diff": "Diff pane, side by side: the file’s line numbers, word-level changes, and unchanged lines folded away.",
+  "shot.files-rss": "The file tree, Files in gallery view, and an RSS pane reading two feeds.",
   "shot.settings-themes": "Settings live in their own window. 33 themes, picked from pictures.",
   "shot.settings-editor": "Every setting is a card with its settings.json key and a live sample.",
   "shot.settings-filter": "Filter across every section; pictures instead of dropdowns.",
@@ -136,10 +137,11 @@ window.DOPAMINE_I18N = {
   "f.14.3": "Filter across sections; options chosen from pictures",
   "f.14.4": "Each card shows its settings.json key and default",
   "f.14.5": "Keep settings.json in iCloud or Dropbox; live reload",
-  "doc.title": "dopamine — a macOS browser with panes, a terminal, files and an editor"
+  "doc.title": "dopamine — Zero Context Switching"
  },
  "ja": {
-  "tagline": "ブラウザで、ターミナルで、ファイルマネージャーで、コードエディタ。1 つの窓をペインに割って、全部を同時に並べておける macOS のブラウザ。",
+  "tagline": "ブラウザ、ターミナル、ファイルマネージャー、コードエディタを 1 つの macOS の窓に。ペインに割って全部を並べておけば、もうアプリを行き来しなくていい。",
+  "slogan.sub": "仕事の道具を全部、1 つの窓に並べて。",
   "spec": "Apple Silicon · macOS 14 以降 · テーマ 33 種 · 12 言語 · アカウント不要",
   "download": "macOS 版をダウンロード",
   "degraded": "GitHub からリリースの情報を読めませんでした。上のダウンロードボタンはそのまま使えます。",
@@ -174,10 +176,10 @@ window.DOPAMINE_I18N = {
   "rel.onGithub": "GitHub ですべてのリリースを見る",
   "rel.pre": "プレリリース",
   "home": "ホーム",
-  "shot.workspace": "1 つの窓に 4 つのペイン。Web ページ、git の印と Run のレンズが付いたエディタ、ターミナル、Files。",
-  "shot.source-control": "サイドバーのソース管理。変更の一覧、コミット欄、枝のグラフ。",
-  "shot.diff": "差分ペイン。左右に並べ、ファイルの行番号を出し、変わっていない行は畳む。",
-  "shot.files-rss": "ギャラリー表示の Files と、RSS ペイン。",
+  "shot.workspace": "窓は 1 つ、行き来はゼロ。ファイルツリー、Web ページ、ターミナル、git の印と Run のレンズが付いたエディタ、Files。",
+  "shot.source-control": "サイドバーのソース管理。ステージ済みと未ステージの変更、コミット欄、枝のグラフ。横のターミナルには git log。",
+  "shot.diff": "差分ペイン。左右に並べ、ファイルの行番号と語単位の差を出し、変わっていない行は畳む。",
+  "shot.files-rss": "ファイルツリー、ギャラリー表示の Files、2 つのフィードを読む RSS ペイン。",
   "shot.settings-themes": "設定は別の窓。テーマ 33 種を絵から選ぶ。",
   "shot.settings-editor": "設定は 1 つずつカードで、settings.json の鍵と実寸の見本付き。",
   "shot.settings-filter": "全区分をまたいで絞り込み。選択肢は絵で選ぶ。",
@@ -274,6 +276,6 @@ window.DOPAMINE_I18N = {
   "f.14.3": "区分をまたいで絞り込み、選択肢は絵で選ぶ",
   "f.14.4": "カードごとに settings.json の鍵と既定値を表示",
   "f.14.5": "settings.json を iCloud や Dropbox に置けて、書き換えは即反映",
-  "doc.title": "dopamine — ペインで割れる macOS のブラウザ（ターミナル・Files・エディタ入り）"
+  "doc.title": "dopamine — Zero Context Switching（コンテキストスイッチ、ゼロ）"
  }
 };

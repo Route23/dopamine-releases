@@ -27,8 +27,8 @@ for i, (area_en, area_ja, items) in enumerate(FEATURES, 1):
     en[f"fa.{i}"], ja[f"fa.{i}"] = area_en, area_ja
     for j, (a, b) in enumerate(items, 1):
         en[f"f.{i}.{j}"], ja[f"f.{i}.{j}"] = a, b
-en["doc.title"] = "dopamine — a macOS browser with panes, a terminal, files and an editor"
-ja["doc.title"] = "dopamine — ペインで割れる macOS のブラウザ（ターミナル・Files・エディタ入り）"
+en["doc.title"] = "dopamine — Zero Context Switching"
+ja["doc.title"] = "dopamine — Zero Context Switching（コンテキストスイッチ、ゼロ）"
 
 total = sum(len(items) for _, _, items in FEATURES)
 
@@ -82,10 +82,10 @@ page = f"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>{e(en["doc.title"])}</title>
-<meta name="description" content="{e(en["tagline"])}">
+<meta name="description" content="Zero Context Switching. {e(en["tagline"])}">
 <link rel="icon" href="./assets/favicon.png" sizes="64x64">
 <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
-<meta property="og:title" content="dopamine">
+<meta property="og:title" content="dopamine — Zero Context Switching">
 <meta property="og:description" content="{e(en["tagline"])}">
 <meta property="og:image" content="https://route23.github.io/dopamine-releases/assets/shots/workspace.webp">
 <meta property="og:url" content="https://route23.github.io/dopamine-releases/">
@@ -111,6 +111,8 @@ page = f"""<!DOCTYPE html>
     <img class="mast__icon" src="./assets/dopamine.png" width="512" height="512" alt="">
     <h1 class="wordmark">dopamine</h1>
     <p class="mast__url">route23.github.io/dopamine-releases</p>
+    <p class="slogan">Zero Context Switching</p>
+    {t("slogan.sub", "p", "slogan__sub")}
     {t("tagline", "p", "mast__tagline")}
     {t("spec", "p", "mast__spec")}
     <!--
@@ -169,6 +171,7 @@ page = f"""<!DOCTYPE html>
 
   <footer class="colophon">
     <p class="colophon__mark">dopamine <span>N°</span> 0.1</p>
+    <p class="colophon__slogan">Zero Context Switching</p>
     <div class="colophon__row">
       <div class="barcode" aria-hidden="true"><span></span><code>3 0 1 2 3 0 0 0 5 1 3</code></div>
       <nav class="colophon__links">
