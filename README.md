@@ -11,6 +11,14 @@
 **This repository holds the downloads and the website, not the source.**
 Builds are published here as Releases; the site under `/` is served by GitHub Pages.
 
+### Editing the website
+
+`index.html` and `assets/i18n.js` are **generated** — edit the English / Japanese text in
+`tools/content.py`, then run `python3 tools/gen.py`. `releases.html`, `assets/styles.css`,
+`assets/site.js` (language switch, lightbox) and `assets/app.js` (release data from the GitHub API)
+are hand-written. Screenshots live in `assets/shots/` as WebP. Append `?lang=ja` / `?lang=en` to a URL
+to force a language.
+
 ## Install
 
 ```sh
