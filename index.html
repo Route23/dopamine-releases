@@ -1,94 +1,115 @@
 <!DOCTYPE html>
+<!-- 生成物（tools/gen.py）。手で直さない。文言は tools/content.py。 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>dopamine — a macOS browser with panes, spaces, files, and a terminal</title>
-<meta name="description" content="dopamine is a macOS desktop browser built on gpui. Split a space into web pages, a terminal, a file browser, and RSS. Apple Silicon, macOS 14+.">
+<title>dopamine — Zero Context Switching</title>
+<meta name="description" content="Zero Context Switching. A browser, a terminal, a file manager and a code editor in one macOS window. Split it into panes, keep everything on screen, and stop switching apps.">
 <link rel="icon" href="./assets/favicon.png" sizes="64x64">
 <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
-<meta property="og:title" content="dopamine">
-<meta property="og:description" content="A macOS desktop browser built on gpui — split a space into web pages, a terminal, a file browser, and RSS.">
-<meta property="og:image" content="https://route23.github.io/dopamine-releases/assets/dopamine.png">
+<meta property="og:title" content="dopamine — Zero Context Switching">
+<meta property="og:description" content="A browser, a terminal, a file manager and a code editor in one macOS window. Split it into panes, keep everything on screen, and stop switching apps.">
+<meta property="og:image" content="https://route23.github.io/dopamine-releases/assets/shots/workspace.webp">
 <meta property="og:url" content="https://route23.github.io/dopamine-releases/">
 <meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700;800&display=swap">
 <link rel="stylesheet" href="./assets/styles.css">
+<script src="./assets/i18n.js" defer></script>
+<script src="./assets/site.js" defer></script>
 <script src="./assets/app.js" defer></script>
 </head>
 <body>
 
-<main class="wrap">
+<nav class="lang" aria-label="Language">
+  <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ja" aria-pressed="false">JA</button>
+</nav>
 
-  <header class="hero">
-    <img class="hero__icon" src="./assets/dopamine.png" width="512" height="512" alt="">
-    <h1>dopamine<span class="chip chip--beta">beta</span></h1>
-    <p class="hero__tagline">
-      A macOS desktop browser built on gpui. Split a space into web pages, a
-      terminal, a file browser, and RSS — then keep them all on screen at once.
-    </p>
+<main class="sheet">
+
+  <header class="mast">
+    <span class="stamp" aria-hidden="true"><span>BETA</span><span>v0.1</span></span>
+    <img class="mast__icon" src="./assets/dopamine.png" width="512" height="512" alt="">
+    <h1 class="wordmark">dopamine</h1>
+    <p class="mast__url">route23.github.io/dopamine-releases</p>
+    <p class="slogan">Zero Context Switching</p>
+    <p class="slogan__sub" data-i18n="slogan.sub">Everything you work with, side by side, in one window.</p>
+    <p class="mast__tagline" data-i18n="tagline">A browser, a terminal, a file manager and a code editor in one macOS window. Split it into panes, keep everything on screen, and stop switching apps.</p>
+    <p class="mast__spec" data-i18n="spec">Apple Silicon · macOS 14+ · 33 themes · 12 languages · no account</p>
+    <!--
+      ダウンロードリンクは **ここに書いてある状態で既に動く**。
+      assets/app.js は href とラベルを上書きするだけで、失敗しても
+      このリンクはそのまま残る（JS 無効・レート制限・オフラインでも押せる）。
+    -->
+    <div class="download">
+      <a id="download-primary" class="btn" href="https://github.com/Route23/dopamine-releases/releases/latest" data-i18n="download">Download for macOS</a>
+      <p id="download-meta" class="download__meta"></p>
+      <p class="status" data-degraded-note hidden><span data-i18n="degraded">Couldn’t load release details from GitHub right now — the download link above still works.</span></p>
+    </div>
   </header>
 
-  <!--
-    ダウンロードリンクは **ここに書いてある状態で既に動く**。
-    assets/app.js は href とラベルを上書きするだけで、失敗しても
-    このリンクはそのまま残る（JS 無効・レート制限・オフラインでも押せる）。
-  -->
-  <div class="download">
-    <a id="download-primary" class="btn-primary"
-       href="https://github.com/Route23/dopamine-releases/releases/latest">
-      Download for macOS
-    </a>
-    <p id="download-meta" class="download__meta"></p>
-    <p class="status" data-degraded-note hidden>
-      Couldn’t load release details from GitHub right now — the download link above still works.
-    </p>
-  </div>
-
-  <section class="shots">
-    <figure>
-      <img src="./assets/shots/panes.webp" width="2400" height="1500" loading="eager" decoding="async"
-           alt="A dopamine window split into three panes: a web page showing rust-lang.org on the left, and on the right a file browser listing a Notes folder stacked above a terminal running a shell.">
-      <figcaption>One space, three panes — a page, a file browser, and a shell, all on screen at once.</figcaption>
-    </figure>
+  <section id="screens" class="block">
+    <h2 class="bi"><span lang="ja">画面</span><span class="bi__sep">—</span><span lang="en">SCREENS</span></h2>
+    <p class="lead" data-i18n="screens.lead">Every picture below is the app as it ships — no mock-ups.</p>
+    <figure class="shot shot--big"><button type="button" class="shot__zoom" data-full="./assets/shots/workspace.webp" aria-label="Enlarge"><img src="./assets/shots/workspace.webp" width="2400" height="1577" loading="eager" decoding="async" alt="One window, no switching: the file tree, a web page, a terminal, the editor with git marks and a Run lens, and Files." data-i18n-alt="shot.workspace"></button><figcaption><span data-i18n="shot.workspace">One window, no switching: the file tree, a web page, a terminal, the editor with git marks and a Run lens, and Files.</span></figcaption></figure>
+    <div class="shots"><figure class="shot"><button type="button" class="shot__zoom" data-full="./assets/shots/source-control.webp" aria-label="Enlarge"><img src="./assets/shots/source-control.webp" width="2400" height="1577" loading="lazy" decoding="async" alt="Source control in the sidebar: staged and unstaged changes, a commit box, and the branch graph — next to the terminal’s git log." data-i18n-alt="shot.source-control"></button><figcaption><span data-i18n="shot.source-control">Source control in the sidebar: staged and unstaged changes, a commit box, and the branch graph — next to the terminal’s git log.</span></figcaption></figure><figure class="shot"><button type="button" class="shot__zoom" data-full="./assets/shots/diff.webp" aria-label="Enlarge"><img src="./assets/shots/diff.webp" width="2400" height="1577" loading="lazy" decoding="async" alt="Diff pane, side by side: the file’s line numbers, word-level changes, and unchanged lines folded away." data-i18n-alt="shot.diff"></button><figcaption><span data-i18n="shot.diff">Diff pane, side by side: the file’s line numbers, word-level changes, and unchanged lines folded away.</span></figcaption></figure><figure class="shot"><button type="button" class="shot__zoom" data-full="./assets/shots/files-rss.webp" aria-label="Enlarge"><img src="./assets/shots/files-rss.webp" width="2400" height="1577" loading="lazy" decoding="async" alt="The file tree, Files in gallery view, and an RSS pane reading two feeds." data-i18n-alt="shot.files-rss"></button><figcaption><span data-i18n="shot.files-rss">The file tree, Files in gallery view, and an RSS pane reading two feeds.</span></figcaption></figure><figure class="shot"><button type="button" class="shot__zoom" data-full="./assets/shots/settings-themes.webp" aria-label="Enlarge"><img src="./assets/shots/settings-themes.webp" width="1640" height="1200" loading="lazy" decoding="async" alt="Settings live in their own window. 33 themes, picked from pictures." data-i18n-alt="shot.settings-themes"></button><figcaption><span data-i18n="shot.settings-themes">Settings live in their own window. 33 themes, picked from pictures.</span></figcaption></figure><figure class="shot"><button type="button" class="shot__zoom" data-full="./assets/shots/settings-editor.webp" aria-label="Enlarge"><img src="./assets/shots/settings-editor.webp" width="1640" height="1200" loading="lazy" decoding="async" alt="Every setting is a card with its settings.json key and a live sample." data-i18n-alt="shot.settings-editor"></button><figcaption><span data-i18n="shot.settings-editor">Every setting is a card with its settings.json key and a live sample.</span></figcaption></figure><figure class="shot"><button type="button" class="shot__zoom" data-full="./assets/shots/settings-filter.webp" aria-label="Enlarge"><img src="./assets/shots/settings-filter.webp" width="1640" height="1200" loading="lazy" decoding="async" alt="Filter across every section; pictures instead of dropdowns." data-i18n-alt="shot.settings-filter"></button><figcaption><span data-i18n="shot.settings-filter">Filter across every section; pictures instead of dropdowns.</span></figcaption></figure></div>
+    <h3 class="bi bi--sub"><span lang="ja">テーマ</span><span class="bi__sep">—</span><span lang="en">THEMES</span></h3>
+    <div class="themes"><figure class="theme"><button type="button" class="shot__zoom" data-full="./assets/shots/theme-catppuccin-mocha.webp" aria-label="Enlarge"><img src="./assets/shots/theme-catppuccin-mocha.webp" width="1600" height="1051" loading="lazy" decoding="async" alt="Catppuccin Mocha"></button><figcaption>Catppuccin Mocha</figcaption></figure><figure class="theme"><button type="button" class="shot__zoom" data-full="./assets/shots/theme-everforest-dark.webp" aria-label="Enlarge"><img src="./assets/shots/theme-everforest-dark.webp" width="1600" height="1051" loading="lazy" decoding="async" alt="Everforest Dark"></button><figcaption>Everforest Dark</figcaption></figure><figure class="theme"><button type="button" class="shot__zoom" data-full="./assets/shots/theme-monokai-pro.webp" aria-label="Enlarge"><img src="./assets/shots/theme-monokai-pro.webp" width="1600" height="1051" loading="lazy" decoding="async" alt="Monokai Pro"></button><figcaption>Monokai Pro</figcaption></figure><figure class="theme"><button type="button" class="shot__zoom" data-full="./assets/shots/theme-solarized-light.webp" aria-label="Enlarge"><img src="./assets/shots/theme-solarized-light.webp" width="1600" height="1051" loading="lazy" decoding="async" alt="Solarized Light"></button><figcaption>Solarized Light</figcaption></figure></div>
   </section>
 
-  <h2>Install with Homebrew</h2>
-  <div class="cmd">
-    <pre><code>brew install --cask Route23/tap/dopamine</code></pre>
-    <button type="button" class="cmd__copy">Copy</button>
-  </div>
-  <p class="small muted">The cask clears the quarantine flag for you.</p>
-
-  <h2>First launch from the <code>.dmg</code></h2>
-  <div class="card">
-    <p>
-      dopamine is signed ad-hoc, <b>not notarized by Apple</b>. If you install
-      from the <code>.dmg</code>, macOS will refuse to open it the first time.
-      Run this once, then open the app:
-    </p>
-    <div class="cmd">
-      <pre><code>xattr -dr com.apple.quarantine /Applications/dopamine.app</code></pre>
-      <button type="button" class="cmd__copy">Copy</button>
+  <section id="features" class="block">
+    <h2 class="bi"><span lang="ja">機能</span><span class="bi__sep">—</span><span lang="en">FEATURES</span></h2>
+    <p class="lead"><span data-i18n="features.lead">Everything dopamine does, in one table.</span> <span class="count">79</span></p>
+    <div class="table-wrap">
+    <table class="spec">
+      <thead><tr><th class="no"><span data-i18n="th.no">N°</span></th><th class="area"><span data-i18n="th.area">Area</span></th><th><span data-i18n="th.what">What it does</span></th></tr></thead>
+      <tbody><tr><td class="no">01</td><td class="area"><span data-i18n="fa.1">Panes &amp; Spaces</span></td><td class="what"><ul><li><span data-i18n="f.1.1">Split any area into panes: browser, terminal, files, editor, RSS</span></li><li><span data-i18n="f.1.2">Several Spaces, switched with ⌘1–⌘8</span></li><li><span data-i18n="f.1.3">Group + Tab mode with nested groups, like VS Code</span></li><li><span data-i18n="f.1.4">Drag tabs to reorder, or drop them on an edge to split</span></li><li><span data-i18n="f.1.5">Tile view, or Strip view that pages through panes</span></li><li><span data-i18n="f.1.6">Mission Control overview with live thumbnails (⌃↑)</span></li><li><span data-i18n="f.1.7">SpaceTree: every Space and pane in the sidebar, renamed in place</span></li><li><span data-i18n="f.1.8">Pane headers with 8 colours and a memory readout</span></li><li><span data-i18n="f.1.9">Session restore: Spaces, panes, names and zoom come back</span></li><li><span data-i18n="f.1.10">Reopen closed panes (⇧⌘T), duplicate panes, Zen Mode (⌃⌘Z)</span></li></ul></td></tr><tr><td class="no">02</td><td class="area"><span data-i18n="fa.2">Browser</span></td><td class="what"><ul><li><span data-i18n="f.2.1">WebKit browsing with a search screen, suggestions and history</span></li><li><span data-i18n="f.2.2">Built-in ad blocking with per-site exceptions</span></li><li><span data-i18n="f.2.3">Secret Mode (⇧⌘N): nothing written to disk</span></li><li><span data-i18n="f.2.4">Translate a page into 12 languages, and back</span></li><li><span data-i18n="f.2.5">Page zoom remembered per site; find in page (⌘F)</span></li><li><span data-i18n="f.2.6">Native right-click menu: save, print, share, view source</span></li><li><span data-i18n="f.2.7">Full history window (⌘Y), downloads, clear browsing data</span></li><li><span data-i18n="f.2.8">Proxy setting; open links in your default browser</span></li></ul></td></tr><tr><td class="no">03</td><td class="area"><span data-i18n="fa.3">Terminal</span></td><td class="what"><ul><li><span data-i18n="f.3.1">Fast terminal built on ghostty-web, 33 colour schemes</span></li><li><span data-i18n="f.3.2">⌘-click paths and URLs to open them in the editor or browser</span></li><li><span data-i18n="f.3.3">Shell profiles, “Open in Terminal”, venv auto-activation</span></li><li><span data-i18n="f.3.4">Shell integration (OSC 133 / OSC 7), exit codes shown</span></li><li><span data-i18n="f.3.5">Asks before closing a shell that is still running</span></li><li><span data-i18n="f.3.6">Spots localhost ports in output and can open them</span></li><li><span data-i18n="f.3.7">⌃V literal insert reaches the shell</span></li></ul></td></tr><tr><td class="no">04</td><td class="area"><span data-i18n="fa.4">Files</span></td><td class="what"><ul><li><span data-i18n="f.4.1">Finder-style browser: list, icon, column and gallery views</span></li><li><span data-i18n="f.4.2">9 list columns, Finder-style sorting, inline folder expansion</span></li><li><span data-i18n="f.4.3">Get Info with Finder tags; filter by tag</span></li><li><span data-i18n="f.4.4">Image lightbox and slideshow</span></li><li><span data-i18n="f.4.5">Cut, copy and paste between panes; drag to Finder or the web</span></li><li><span data-i18n="f.4.6">“Replace or keep both?” when names clash; inline rename</span></li></ul></td></tr><tr><td class="no">05</td><td class="area"><span data-i18n="fa.5">Editor</span></td><td class="what"><ul><li><span data-i18n="f.5.1">Code editor with tree-sitter highlighting, one file per pane</span></li><li><span data-i18n="f.5.2">Sidebar file tree with several roots</span></li><li><span data-i18n="f.5.3">Find and replace with smartcase, whole word and regex</span></li><li><span data-i18n="f.5.4">Minimap with the caret’s line and MARK: / #region headers</span></li><li><span data-i18n="f.5.5">Sticky scroll, scrollbar markers, breadcrumbs</span></li><li><span data-i18n="f.5.6">Bracket colours, guides, folding, rulers, visible whitespace</span></li><li><span data-i18n="f.5.7">Keeps indentation, encoding and line endings as found</span></li><li><span data-i18n="f.5.8">Format on save, type or paste; auto save</span></li><li><span data-i18n="f.5.9">Local history and a timeline of every save</span></li><li><span data-i18n="f.5.10">Unsaved drafts survive quitting</span></li></ul></td></tr><tr><td class="no">06</td><td class="area"><span data-i18n="fa.6">Language servers</span></td><td class="what"><ul><li><span data-i18n="f.6.1">Diagnostics as squiggles and at the end of the line</span></li><li><span data-i18n="f.6.2">Completion, hover, parameter hints, inlay hints</span></li><li><span data-i18n="f.6.3">Go to definition (⌃⌘J), code actions, semantic colours</span></li><li><span data-i18n="f.6.4">CodeLens, with Run and Test for Rust; lists references</span></li><li><span data-i18n="f.6.5">Problems (⇧⌘M) and Output (⇧⌘U) panes</span></li><li><span data-i18n="f.6.6">Asks before trusting a folder; trust can be revoked</span></li></ul></td></tr><tr><td class="no">07</td><td class="area"><span data-i18n="fa.7">Git</span></td><td class="what"><ul><li><span data-i18n="f.7.1">Source control: Changes and Graph sections</span></li><li><span data-i18n="f.7.2">Commit, stash, pull, push, fetch, branches, create PR</span></li><li><span data-i18n="f.7.3">Change marks in the gutter; revert or stage one hunk</span></li><li><span data-i18n="f.7.4">Inline blame at the end of the caret’s line</span></li><li><span data-i18n="f.7.5">Diff pane: side by side or inline, with line numbers</span></li></ul></td></tr><tr><td class="no">08</td><td class="area"><span data-i18n="fa.8">Search &amp; Tasks</span></td><td class="what"><ul><li><span data-i18n="f.8.1">Search in Files across the workspace with replace preview (⇧⌘F)</span></li><li><span data-i18n="f.8.2">Run Task… finds npm, pnpm, yarn, bun, Cargo and Make targets</span></li><li><span data-i18n="f.8.3">Pulls problems out of task output ($rustc, $tsc, $eslint, $gcc)</span></li><li><span data-i18n="f.8.4">Sound and announcement signals for tasks and saves</span></li></ul></td></tr><tr><td class="no">09</td><td class="area"><span data-i18n="fa.9">Appearance</span></td><td class="what"><ul><li><span data-i18n="f.9.1">33 themes: Ayu, Gruvbox, One, Catppuccin, Monokai, Everforest, Iceberg, Solarized</span></li><li><span data-i18n="f.9.2">Follows macOS light and dark, with a theme for each</span></li><li><span data-i18n="f.9.3">Wallpaper and per-area translucency</span></li><li><span data-i18n="f.9.4">UI font, size and density; Reduce Motion and Transparency</span></li><li><span data-i18n="f.9.5">UI in 12 languages, switched without restarting</span></li></ul></td></tr><tr><td class="no">10</td><td class="area"><span data-i18n="fa.10">Keyboard</span></td><td class="what"><ul><li><span data-i18n="f.10.1">Full native menu bar with standard macOS shortcuts</span></li><li><span data-i18n="f.10.2">Record your own keybindings</span></li><li><span data-i18n="f.10.3">Keystroke visualiser for screen recordings</span></li><li><span data-i18n="f.10.4">Focus follows the mouse (optional)</span></li></ul></td></tr><tr><td class="no">11</td><td class="area"><span data-i18n="fa.11">RSS &amp; Profiles</span></td><td class="what"><ul><li><span data-i18n="f.11.1">RSS pane with feed chips and thumbnails; articles open in a pane</span></li><li><span data-i18n="f.11.2">Separate browsing profiles, each with an avatar and colour</span></li><li><span data-i18n="f.11.3">Bookmark tree with drag and drop; bookmark all panes</span></li></ul></td></tr><tr><td class="no">12</td><td class="area"><span data-i18n="fa.12">Integrations</span></td><td class="what"><ul><li><span data-i18n="f.12.1">Spotify widget in the footer: now playing and controls</span></li><li><span data-i18n="f.12.2">Discord Rich Presence that shares only the pane type</span></li></ul></td></tr><tr><td class="no">13</td><td class="area"><span data-i18n="fa.13">Privacy &amp; Updates</span></td><td class="what"><ul><li><span data-i18n="f.13.1">Every URL is checked before it loads</span></li><li><span data-i18n="f.13.2">Crash log stays on your Mac, never sent</span></li><li><span data-i18n="f.13.3">In-app updates, signed with ed25519; one click to swap and relaunch</span></li><li><span data-i18n="f.13.4">Launches in about 0.9 s with ad blocking on</span></li></ul></td></tr><tr><td class="no">14</td><td class="area"><span data-i18n="fa.14">Settings</span></td><td class="what"><ul><li><span data-i18n="f.14.1">Settings in their own window (⌘,), one card per setting</span></li><li><span data-i18n="f.14.2">Right-click any area of the UI to open its settings</span></li><li><span data-i18n="f.14.3">Filter across sections; options chosen from pictures</span></li><li><span data-i18n="f.14.4">Each card shows its settings.json key and default</span></li><li><span data-i18n="f.14.5">Keep settings.json in iCloud or Dropbox; live reload</span></li></ul></td></tr></tbody>
+    </table>
     </div>
-    <p class="small muted" style="margin-top:1em;margin-bottom:0">
-      Installing with Homebrew does this for you.
-    </p>
-  </div>
+    <p class="legend" data-i18n="legend">● = built in, no extension needed    N° = section</p>
+  </section>
 
-  <h2>Requirements</h2>
-  <ul class="reqs">
-    <li><b>macOS 14 (Sonoma)</b> or later</li>
-    <li><b>Apple Silicon</b> (arm64) only — there is no Intel build</li>
-  </ul>
+  <section id="install" class="block">
+    <h2 class="bi"><span lang="ja">導入</span><span class="bi__sep">—</span><span lang="en">INSTALL</span></h2>
+    <div class="grid2">
+      <div class="box">
+        <h3 data-i18n="install.brew">Install with Homebrew</h3>
+        <div class="cmd"><pre><code>brew install --cask Route23/tap/dopamine</code></pre><button type="button" class="cmd__copy" data-i18n="copy">Copy</button></div>
+        <p class="small" data-i18n="install.brew.note">The cask clears the quarantine flag for you.</p>
+      </div>
+      <div class="box">
+        <h3 data-i18n="install.dmg">First launch from the .dmg</h3>
+        <p data-i18n="install.dmg.body">dopamine is signed ad-hoc and not notarized by Apple, so macOS refuses to open it the first time. Run this once, then open the app:</p>
+        <div class="cmd"><pre><code>xattr -dr com.apple.quarantine /Applications/dopamine.app</code></pre><button type="button" class="cmd__copy" data-i18n="copy">Copy</button></div>
+      </div>
+    </div>
+    <table class="req">
+      <tr><td class="no">I</td><td><span data-i18n="req.os">macOS 14 (Sonoma) or later</span></td></tr>
+      <tr><td class="no">II</td><td><span data-i18n="req.cpu">Apple Silicon (arm64) only — there is no Intel build</span></td></tr>
+      <tr><td class="no">III</td><td><span data-i18n="updates">Updates arrive inside the app and are signed with ed25519.</span></td></tr>
+    </table>
+  </section>
 
-  <footer class="site-footer">
-    <a href="./releases.html">All releases</a>
-    <a href="https://github.com/Route23/dopamine-issues/issues">Report a bug</a>
-    <a href="https://github.com/Route23/dopamine-releases">GitHub</a>
+  <footer class="colophon">
+    <p class="colophon__mark">dopamine <span>N°</span> 0.1</p>
+    <p class="colophon__slogan">Zero Context Switching</p>
+    <div class="colophon__row">
+      <div class="barcode" aria-hidden="true"><span></span><code>3 0 1 2 3 0 0 0 5 1 3</code></div>
+      <nav class="colophon__links">
+        <a href="./releases.html" data-i18n="footer.releases">All releases</a>
+        <a href="https://github.com/Route23/dopamine-issues/issues" data-i18n="footer.bug">Report a bug</a>
+        <a href="https://github.com/Route23/dopamine-releases" data-i18n="footer.github">GitHub</a>
+      </nav>
+    </div>
+    <p class="colophon__made" data-i18n="made">Made on a Mac · distributed free</p>
   </footer>
 
 </main>
+
+<dialog class="lightbox" aria-label="Screenshot"><img alt=""><button type="button" class="lightbox__close" aria-label="Close">×</button></dialog>
 
 </body>
 </html>

@@ -29,10 +29,18 @@
 
   // ── utils ────────────────────────────────────────────────────────────
 
+  /** 文言（#513）。辞書は assets/i18n.js、引くのは assets/site.js。無ければ英語の `fb`。 */
+  function T(key, fb, vars) {
+    if (typeof window.dopamineT === "function") return window.dopamineT(key, vars);
+    var s = fb;
+    if (vars) for (var k in vars) s = s.split("{" + k + "}").join(vars[k]);
+    return s;
+  }
+
   function fmtDate(iso) {
     if (!iso) return "";
     try {
-      return new Intl.DateTimeFormat("en", {
+      return new Intl.DateTimeFormat(window.dopamineLang === "ja" ? "ja" : "en", {
         year: "numeric", month: "short", day: "numeric",
       }).format(new Date(iso));
     } catch (e) { return ""; }
@@ -168,19 +176,19 @@
 
     if (!releases.length) {
       // **今日の状態。** エラーではなく、別の状態として扱う。
-      btn.textContent = "No public build yet";
-      if (meta) meta.textContent = "The first release will be v0.1.0.";
+      btn.textContent = T("dl.none", "No public build yet");
+      if (meta) meta.textContent = T("dl.first", "The first release will be v0.1.0.");
       return;
     }
     var latest = releases[0];
     var asset = dmgAsset(latest);
     var url = asset && safeUrl(asset.browser_download_url);
     if (!url) {
-      if (meta) meta.textContent = "Latest release: " + latest.tag_name;
+      if (meta) meta.textContent = T("dl.latestOnly", "Latest release: {tag}", { tag: latest.tag_name });
       return;
     }
     btn.href = url;
-    btn.textContent = "Download dopamine " + latest.tag_name;
+    btn.textContent = T("dl.latest", "Download dopamine {tag}", { tag: latest.tag_name });
     if (meta) {
       meta.textContent = [asset.name, fmtSize(asset.size), fmtDate(latest.published_at)]
         .filter(Boolean).join(" · ");
@@ -196,7 +204,7 @@
 
     if (!releases.length) {
       if (fallback) {
-        fallback.textContent = "No releases yet. The first public build will be v0.1.0.";
+        fallback.textContent = T("rel.none", "No releases yet. The first public build will be v0.1.0.");
         fallback.hidden = false;
       }
       return;
@@ -217,7 +225,7 @@
       if (r.prerelease) {
         var chip = document.createElement("span");
         chip.className = "chip";
-        chip.textContent = "pre-release";
+        chip.textContent = T("rel.pre", "pre-release");
         head.appendChild(chip);
       }
       if (r.published_at) {
@@ -281,7 +289,7 @@
           if (!pre) return;
           navigator.clipboard.writeText(pre.textContent.trim()).then(function () {
             var old = btn.textContent;
-            btn.textContent = "Copied";
+            btn.textContent = T("copied", "Copied");
             setTimeout(function () { btn.textContent = old; }, 1500);
           });
         });
