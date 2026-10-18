@@ -1,369 +1,288 @@
-/* dopamine — distribution site（#513 で作り直し）
+/* Dopamine — distribution site (#1110 / dopamine#1110)
  *
- * 見た目は **Rhodia のメモ帳の裏表紙**に寄せている: 黒い地・生成りの太いジオメトリック体・
- * 細い罫線の仕様表・方眼・2 か国語の見出し（「LA GAMME - THE SELECTION」→「機能 — FEATURES」）。
- * 模写はしない —— 色は本体の DOPAMINE_DARK（crates/core/src/palette.rs の THEMES[0]）を
- * そのまま写している。**値を勝手に変えないこと** —— 本体を変えたらここも直す。
- * 本体の橙（accent）が Rhodia の表紙の橙とたまたま近いので、アクセントはそれだけ。
- *
- * ダークに振り切っている（prefers-color-scheme で分岐しない）。明るいサイトが暗いアプリを
- * 案内するのは製品の見た目を偽ることになる。
+ * 起動画面の空気に合わせる: フォントは Instrument Serif だけ（コードだけ等幅）、
+ * 色は起動画面の 4 色だけ（crates/core/src/launch_dither.rs の LAUNCH_PALETTE）。
+ * 灰色が要る所は白を透かす。地に起動画面の絵と同じ青と錆の点を薄く散らす。
  */
-
 :root {
+  --black: #000000;
+  --white: #ffffff;
+  --red: #af3816;
+  --blue: #3e43ff;
+  --soft: rgb(255 255 255 / 0.62);
+  --faint: rgb(255 255 255 / 0.18);
+  --serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
   color-scheme: dark;
-
-  --window-bg:  #0a0a09;
-  --surface:    #282828;
-  --recessed:   #181818;
-  --border:     #373736;
-  --fg:         #f5e2da;
-  --muted-fg:   #9a938c;
-  --accent:     #ffa703;
-  /* 本体の palette.rs が明記しているとおり **黒**。白ではない。 */
-  --on-accent:  #000000;
-
-  /* 罫線は**この 1 色だけ**（生成りを薄めたもの / Rhodia の白い罫の代わり）。
-   * 枠・表の罫・区切りは全部これ。濃淡を混ぜない。 */
-  --rule: color-mix(in srgb, var(--fg) 40%, transparent);
-  /* 方眼。背景の飾りにだけ使う。 */
-  --grid: color-mix(in srgb, var(--fg) 4%, transparent);
-
-  --display: "Jost", "Futura", "Avenir Next", -apple-system, "Hiragino Sans", sans-serif;
-  --font: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+* { box-sizing: border-box; }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background-color: var(--window-bg);
+  background-color: var(--black);
+  /* 起動画面の絵のディザの点（青と錆）。2 つの格子をずらして、規則が目立たないように。 */
   background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 22px 22px;
-  color: var(--fg);
-  font-family: var(--font);
-  font-size: 16px;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
+    radial-gradient(rgb(62 67 255 / 0.55) 0.9px, transparent 1.3px),
+    radial-gradient(rgb(175 56 22 / 0.6) 0.9px, transparent 1.3px);
+  background-size: 29px 29px, 37px 37px;
+  background-position: 3px 7px, 19px 23px;
+  color: var(--white);
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.45;
 }
 
-/* 日本語は文節で折り返す（「割っ／て」のような切れ目を作らない）。 */
-html[lang="ja"] body { word-break: auto-phrase; line-break: strict; }
-.mast__tagline, .lead, .bi { text-wrap: balance; }
+a { color: var(--white); text-decoration-color: var(--blue); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--blue); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 
-img, video, svg { max-width: 100%; height: auto; }
-pre { overflow-x: auto; }
-a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset: 3px; }
-a:hover { text-decoration-color: var(--accent); }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+em { font-style: italic; }
+code, pre { font-family: var(--mono); font-size: 0.72em; }
 
-.sheet {
-  max-width: 1080px;
-  margin-inline: auto;
-  padding-inline: clamp(16px, 4vw, 40px);
-  padding-block: clamp(48px, 8vw, 88px) 40px;
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-/* ── 言語の切り替え（右上）── */
+/* ── hero ─────────────────────────────────────────────────────────── */
 
-.lang {
-  position: fixed;
-  top: 14px;
-  right: 14px;
-  z-index: 10;
-  display: flex;
-  border: 1px solid var(--rule);
-  background: var(--window-bg);
+.hero {
+  padding: 96px 0 56px;
+  text-align: center;
 }
-.lang button {
-  font: 700 12px/1 var(--display);
-  letter-spacing: .12em;
-  color: var(--muted-fg);
-  background: transparent;
-  border: 0;
-  padding: 8px 10px;
-  cursor: pointer;
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--soft);
+  font-size: 18px;
+  letter-spacing: 0.04em;
 }
-.lang button + button { border-left: 1px solid var(--rule); }
-.lang button[aria-pressed="true"] { color: var(--on-accent); background: var(--accent); }
-/* スマホ幅ではページの上に置く（固定すると見出しに重なる）。 */
-@media (max-width: 640px) { .lang, .topnav { position: absolute; } }
 
-/* ── 表紙 ── */
-
-.mast { position: relative; text-align: center; }
-.mast__icon { width: 96px; height: 96px; display: block; margin: 0 auto 14px; }
 .wordmark {
   margin: 0;
-  font: 800 clamp(44px, 9vw, 88px)/1 var(--display);
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(76px, 15vw, 168px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
 }
-.mast__url { margin: 6px 0 0; font: 500 clamp(15px, 2.2vw, 19px)/1.3 var(--display); letter-spacing: .02em; }
-/* 謳い文句（Zero Context Switching）。**訳さない** —— 名前と同じく英語のまま出す。 */
+
 .slogan {
-  margin: 34px 0 0;
-  font: 800 clamp(26px, 4.6vw, 46px)/1.1 var(--display);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.slogan__sub { margin: 10px 0 0; font: 600 clamp(15px, 1.9vw, 18px)/1.4 var(--display); letter-spacing: .04em; }
-.mast__tagline { max-width: 44em; margin: 22px auto 0; font-size: clamp(16px, 2vw, 18px); color: var(--muted-fg); }
-.mast__spec {
   margin: 10px 0 0;
-  font: 600 13px/1.5 var(--display);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted-fg);
+  color: var(--red);
+  font-style: italic;
+  font-size: clamp(28px, 4.4vw, 42px);
 }
-html[lang="ja"] .mast__spec { letter-spacing: .06em; }
 
-/* 右上の丸い判子（Rhodia の「PATENT PENDING」の代わり）。 */
-.stamp {
-  position: absolute;
-  top: -8px;
-  right: clamp(0px, 6vw, 80px);
-  width: 78px;
-  height: 78px;
-  border: 2px solid var(--rule);
-  border-radius: 50%;
-  display: grid;
-  place-content: center;
-  gap: 3px;
-  transform: rotate(-18deg);
-  font: 800 13px/1 var(--display);
-  letter-spacing: .12em;
-  text-align: center;
-  opacity: .85;
+.lede {
+  max-width: 34ch;
+  overflow-wrap: anywhere;
+  margin: 18px auto 0;
+  font-size: clamp(21px, 2.6vw, 26px);
 }
-.stamp span + span { font-weight: 600; font-size: 11px; color: var(--accent); }
-@media (max-width: 640px) { .stamp { display: none; } }
 
-.download { margin-top: 30px; }
-.btn {
+.download { margin-top: 36px; }
+
+.button {
   display: inline-block;
-  background: var(--accent);
-  color: var(--on-accent);
-  font: 700 15px/1 var(--display);
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  padding: 14px 34px 12px;
+  border-radius: 999px;
+  background: var(--red);
+  color: var(--white);
+  font-size: 24px;
   text-decoration: none;
-  padding: 16px 30px;
 }
-html[lang="ja"] .btn { letter-spacing: .04em; }
-.btn:hover { background: color-mix(in srgb, var(--accent) 88%, #fff); }
-.download__meta { margin: 12px 0 0; font: 500 13px/1.4 var(--mono); color: var(--muted-fg); min-height: 1.4em; }
-.status { color: var(--muted-fg); font-size: 14px; }
+.button:hover { background: var(--blue); color: var(--white); }
 
-/* ── 区分 ── */
-
-.block { margin-top: clamp(64px, 10vw, 112px); }
-
-/* 2 か国語の見出し。**切り替えても両方出す。** */
-.bi {
-  margin: 0 0 10px;
-  text-align: center;
-  font: 700 clamp(19px, 2.8vw, 26px)/1.2 var(--display);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-.bi__sep { margin-inline: .5em; color: var(--muted-fg); }
-/* 日英を並べるのは**日本語のときだけ**。英語のページに日本語を混ぜない（JS 無効でも英語だけ）。 */
-html:not([lang="ja"]) .bi > [lang="ja"], html:not([lang="ja"]) .bi > .bi__sep { display: none; }
-.bi--sub { font-size: 17px; margin-top: 56px; }
-
-.lead { text-align: center; color: var(--muted-fg); margin: 0 0 28px; }
-.count {
-  display: inline-block;
-  margin-left: .4em;
-  padding: 0 .45em;
-  border: 1px solid var(--rule);
-  font: 700 13px/1.6 var(--display);
-  color: var(--fg);
+.meta {
+  margin: 12px 0 0;
+  color: var(--soft);
+  font-size: 17px;
 }
 
-/* ── 画面 ── */
+.others {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 22px;
+  margin: 10px 0 0;
+  font-size: 18px;
+}
 
-.shot, .theme { margin: 0; }
-/* 窓の角は丸い（macOS）ので、**枠と画像の間を空ける** —— 四角い枠に丸い角が
- * ぶつかると、欠けたように見える。 */
+/* ── shots ────────────────────────────────────────────────────────── */
+
+.shot { margin: 0; }
+
 .shot__zoom {
   display: block;
   width: 100%;
-  padding: clamp(8px, 1.4vw, 14px);
-  border: 1px solid var(--rule);
-  background: var(--window-bg);
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: zoom-in;
 }
-.shot__zoom img { display: block; width: 100%; }
-.shot figcaption { margin-top: 8px; font-size: 14px; color: var(--muted-fg); }
-.shot--big figcaption { text-align: center; }
 
-.shots {
-  margin-top: 36px;
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.shot figcaption {
+  max-width: 46ch;
+  margin: 6px auto 0;
+  color: var(--soft);
+  font-size: 19px;
+  text-align: center;
+}
+.shot figcaption em { color: var(--white); }
+
+.shot--hero figcaption { font-size: 21px; }
+
+.pair {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-  gap: 28px 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  margin: 80px 0 0;
 }
 
-.themes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.themes .shot__zoom { padding: 8px; }
-@media (max-width: 760px) { .themes { grid-template-columns: repeat(2, 1fr); } }
-.theme figcaption {
-  margin-top: 8px;
-  text-align: center;
-  font: 600 12px/1.4 var(--display);
-  letter-spacing: .1em;
-  text-transform: uppercase;
+/* ── install ──────────────────────────────────────────────────────── */
+
+.install {
+  margin: 96px 0 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--faint);
 }
 
-/* ── 機能の表（Rhodia の仕様表）── */
-
-.table-wrap { overflow-x: auto; }
-.spec { width: 100%; border-collapse: collapse; border: 1px solid var(--rule); font-size: 15px; }
-.spec th {
-  font: 600 13px/1.3 var(--display);
-  letter-spacing: .08em;
-  text-align: left;
-  padding: 8px 12px;
-  border: 1px solid var(--rule);
-}
-.spec td {
-  vertical-align: top;
-  padding: 12px;
-  border-left: 1px solid var(--rule);
-  border-right: 1px solid var(--rule);
-  border-top: 1px solid var(--rule);
-}
-.spec .no { width: 3.4em; font: 800 16px/1.4 var(--display); text-align: center; }
-.spec .area { width: 12em; font: 700 15px/1.4 var(--display); letter-spacing: .04em; text-transform: uppercase; }
-html[lang="ja"] .spec .area { text-transform: none; letter-spacing: 0; }
-.spec ul { margin: 0; padding: 0; list-style: none; columns: 2 18em; column-gap: 28px; }
-.spec li { break-inside: avoid; padding-left: 1.2em; position: relative; margin-bottom: 4px; }
-.spec li::before { content: "●"; position: absolute; left: 0; top: .15em; font-size: .72em; color: var(--accent); }
-@media (max-width: 640px) {
-  .spec thead { display: none; }
-  .spec, .spec tbody, .spec tr, .spec td { display: block; width: auto; }
-  .spec tr { border-top: 1px solid var(--rule); }
-  .spec tr:first-child { border-top: 0; }
-  .spec td { border: 0; padding: 6px 12px; }
-  .spec .no, .spec .area { display: inline-block; padding-top: 12px; }
-  .spec .no { text-align: left; width: auto; }
-}
-.legend {
-  margin: 10px 0 0;
-  text-align: center;
-  font: 600 12px/1.5 var(--display);
-  letter-spacing: .06em;
-  color: var(--muted-fg);
-  white-space: pre-wrap;
+.install h2 {
+  margin: 0;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 56px;
 }
 
-/* ── 導入 ── */
-
-.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 20px; }
-.box { border: 1px solid var(--rule); padding: 18px 20px; background: var(--window-bg); }
-.box h3 { margin: 0 0 10px; font: 700 15px/1.3 var(--display); letter-spacing: .08em; text-transform: uppercase; }
-html[lang="ja"] .box h3 { letter-spacing: .02em; }
-.box p { margin: 0 0 12px; }
-.small { font-size: 14px; color: var(--muted-fg); }
-.box .small { margin: 10px 0 0; }
-
-.cmd { display: flex; align-items: stretch; border: 1px solid var(--rule); background: var(--recessed); }
-.cmd pre { margin: 0; padding: 12px 14px; flex: 1; font: 14px/1.5 var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; }
-.cmd__copy {
-  border: 0;
-  border-left: 1px solid var(--rule);
-  background: transparent;
-  color: var(--fg);
-  font: 600 12px/1 var(--display);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 0 14px;
-  cursor: pointer;
+.install__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  margin-top: 12px;
 }
-.cmd__copy:hover { color: var(--accent); }
 
-.req { margin-top: 20px; width: 100%; border-collapse: collapse; border: 1px solid var(--rule); background: var(--window-bg); }
-.req td { padding: 10px 12px; border-top: 1px solid var(--rule); }
-.req .no { width: 3.4em; text-align: center; font: 800 15px/1 var(--display); border-right: 1px solid var(--rule); }
-
-/* ── 奥付（Rhodia の裏表紙の下端）── */
-
-.colophon { margin-top: clamp(72px, 10vw, 120px); text-align: center; }
-.colophon__mark { margin: 0 0 22px; font: 800 clamp(26px, 4vw, 38px)/1 var(--display); letter-spacing: .08em; text-transform: uppercase; }
-.colophon__mark span { font-weight: 600; margin-inline: .15em; }
-.colophon__row { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 20px; }
-.barcode { background: var(--fg); color: var(--window-bg); padding: 10px 14px 6px; display: grid; gap: 4px; min-width: 220px; }
-.barcode span {
-  height: 46px;
-  background: repeating-linear-gradient(90deg,
-    var(--window-bg) 0 2px, transparent 2px 4px, var(--window-bg) 4px 5px, transparent 5px 8px,
-    var(--window-bg) 8px 11px, transparent 11px 12px, var(--window-bg) 12px 13px, transparent 13px 17px);
+.install h3 {
+  margin: 0 0 6px;
+  color: var(--red);
+  font-weight: 400;
+  font-size: 30px;
 }
-.barcode code { font: 600 13px/1 var(--mono); letter-spacing: .12em; }
-.colophon__links {
-  border: 1px solid var(--rule);
-  padding: 14px 20px;
+
+.install p { margin: 0 0 12px; }
+
+.cmd {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  text-align: left;
-  font-size: 14px;
-  min-width: 220px;
-  background: var(--window-bg);
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--faint);
+  border-radius: 8px;
+  background: var(--black);
 }
-.colophon__slogan { margin: -10px 0 22px; font: 700 14px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
-.colophon__made { margin: 22px 0 0; font: 700 12px/1.4 var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--muted-fg); }
-html[lang="ja"] .colophon__slogan { margin: -10px 0 22px; font: 700 14px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
-.colophon__made { letter-spacing: .06em; }
-
-/* ── 拡大 ── */
-
-.lightbox { max-width: 96vw; max-height: 94vh; padding: 0; border: 1px solid var(--rule); background: var(--window-bg); }
-.lightbox::backdrop { background: rgb(0 0 0 / .85); }
-.lightbox img { display: block; max-width: 96vw; max-height: 94vh; width: auto; height: auto; }
-.lightbox__close {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  border: 1px solid var(--rule);
-  background: var(--window-bg);
-  color: var(--fg);
-  font: 600 18px/1 var(--display);
-  width: 32px;
-  height: 32px;
+.cmd pre {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+.cmd__copy {
+  flex: none;
+  padding: 3px 12px 2px;
+  border: 1px solid var(--faint);
+  border-radius: 999px;
+  background: none;
+  color: var(--white);
+  font-family: var(--serif);
+  font-size: 16px;
   cursor: pointer;
 }
+.cmd__copy:hover { border-color: var(--blue); color: var(--blue); }
 
-/* ── releases.html ── */
+/* ── footer ───────────────────────────────────────────────────────── */
 
-.topnav { position: fixed; top: 14px; left: 14px; z-index: 10; font: 600 13px/1 var(--display); letter-spacing: .1em; text-transform: uppercase; }
-.topnav a { display: inline-block; padding: 8px 10px; border: 1px solid var(--rule); background: var(--window-bg); text-decoration: none; }
-.sheet--narrow { max-width: 860px; }
-.page-lead { text-align: center; color: var(--muted-fg); margin: 0 0 28px; }
-.releases { list-style: none; padding: 0; margin: 0; border: 1px solid var(--rule); background: var(--window-bg); }
-.releases > li { padding: 20px; border-top: 1px solid var(--rule); }
-.releases > li:first-child { border-top: 0; }
-.release__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6em; }
-.release__head h2 { margin: 0; font: 800 22px/1.2 var(--display); letter-spacing: .04em; }
-.release__head time { color: var(--muted-fg); font: 500 13px/1 var(--mono); }
-.release__notes { margin-top: 1em; font-size: 15px; }
-.release__notes h1, .release__notes h2, .release__notes h3 { font: 700 15px/1.3 var(--display); letter-spacing: .06em; text-transform: uppercase; margin: 1.2em 0 .4em; }
-.release__notes pre { padding: 12px 14px; background: var(--recessed); border: 1px solid var(--rule); font: 13px/1.5 var(--mono); }
-.release__notes code { font-family: var(--mono); font-size: .9em; }
-.release__notes :not(pre) > code { background: var(--recessed); padding: 1px 5px; }
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin: 96px 0 0;
+  padding: 24px 0 48px;
+  border-top: 1px solid var(--faint);
+}
+.footer__mark { font-style: italic; font-size: 30px; }
+.footer nav { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 18px; }
+
+/* ── releases.html ────────────────────────────────────────────────── */
+
+.topnav { padding: 28px 0 0; font-size: 18px; }
+
+.page-title {
+  margin: 40px 0 0;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(56px, 10vw, 104px);
+  line-height: 1;
+}
+.page-lead { margin: 8px 0 0; color: var(--soft); }
+
+.releases { margin: 40px 0 0; padding: 0; list-style: none; }
+.releases > li { padding: 28px 0; border-top: 1px solid var(--faint); }
+
+.release__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+.release__head h2 { margin: 0; font-weight: 400; font-style: italic; font-size: 40px; }
+.release__head time { color: var(--soft); font-size: 18px; }
+.chip { padding: 1px 10px; border: 1px solid var(--red); border-radius: 999px; color: var(--red); font-size: 15px; }
+
+.release__notes { max-width: 70ch; }
+.release__notes h2, .release__notes h3 { margin: 22px 0 6px; font-weight: 400; color: var(--red); font-size: 26px; }
+.release__notes ul { padding-left: 1.2em; }
+.release__notes li { margin: 4px 0; }
+.release__notes strong { font-weight: 400; font-style: italic; }
+.release__notes pre { padding: 10px 12px; border: 1px solid var(--faint); border-radius: 8px; overflow-x: auto; }
 .notes-raw { white-space: pre-wrap; }
-.release__dl { display: inline-block; margin-top: 1em; font-size: 14px; }
-.chip { display: inline-block; padding: 2px 8px; border: 1px solid var(--rule); color: var(--accent); font: 700 11px/1.4 var(--display); letter-spacing: .1em; text-transform: uppercase; }
-.muted { color: var(--muted-fg); }
 
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
+.release__dls { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 14px 0 0; font-size: 18px; }
+
+.status { margin: 28px 0 0; color: var(--soft); }
+
+/* ── 404 ──────────────────────────────────────────────────────────── */
+
+.lost { padding: 18vh 0; text-align: center; }
+
+/* ── lightbox ─────────────────────────────────────────────────────── */
+
+.lightbox {
+  max-width: 96vw;
+  max-height: 94vh;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.lightbox::backdrop { background: rgb(0 0 0 / 0.92); }
+.lightbox img { display: block; max-width: 96vw; max-height: 94vh; width: auto; height: auto; cursor: zoom-out; }
+
+/* ── narrow ───────────────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  body { font-size: 19px; }
+  .page { padding: 0 16px; }
+  .hero { padding: 56px 0 36px; }
+  .pair, .install__cols { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .pair { margin-top: 56px; }
+  .install { margin-top: 64px; }
+  .install h2 { font-size: 44px; }
 }

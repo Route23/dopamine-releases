@@ -15,6 +15,9 @@
  *    マークダウンを解釈せず `textContent` で出す（構造上インジェクション不能）。
  *
  * 外部依存ゼロ。origin の外へ出るリクエストは GitHub REST への 1 本だけ。
+ *
+ * 配る物は 3 つ（#1110）: macOS の DMG と、Windows のインストーラー（x64 / ARM64）。
+ * 主ボタンは訪問者の OS に合う物を指し、ほかは下の小さなリンクに。
  */
 (function () {
   "use strict";
@@ -24,14 +27,17 @@
   var RELEASES_URL = "https://github.com/" + REPO + "/releases";
   var CACHE_KEY = "dopamine.releases.v1";
   var TTL_MS = 10 * 60 * 1000;
-  // 資産の特定は **後方一致**。真ん中のバージョンに依存しない。
-  var DMG_SUFFIX = "_aarch64.dmg";
+  // 資産の特定は **後方一致**。真ん中のバージョンに依存しない（release.yml が付ける名前）。
+  var ASSETS = {
+    mac: { suffix: "_aarch64.dmg", label: "macOS" },
+    winX64: { suffix: "_x64-setup.exe", label: "Windows x64" },
+    winArm64: { suffix: "_arm64-setup.exe", label: "Windows ARM64" },
+  };
 
   // ── utils ────────────────────────────────────────────────────────────
 
-  /** 文言（#513）。辞書は assets/i18n.js、引くのは assets/site.js。無ければ英語の `fb`。 */
+  /** 文言。英語だけ（#1110 で日本語を外した）。`{name}` を `vars` で埋める。 */
   function T(key, fb, vars) {
-    if (typeof window.dopamineT === "function") return window.dopamineT(key, vars);
     var s = fb;
     if (vars) for (var k in vars) s = s.split("{" + k + "}").join(vars[k]);
     return s;
@@ -40,7 +46,7 @@
   function fmtDate(iso) {
     if (!iso) return "";
     try {
-      return new Intl.DateTimeFormat(window.dopamineLang === "ja" ? "ja" : "en", {
+      return new Intl.DateTimeFormat("en", {
         year: "numeric", month: "short", day: "numeric",
       }).format(new Date(iso));
     } catch (e) { return ""; }
@@ -52,14 +58,31 @@
     return (mb >= 100 ? mb.toFixed(0) : mb.toFixed(1)) + " MB";
   }
 
-  function dmgAsset(release) {
+  function assetBySuffix(release, suffix) {
     var assets = (release && release.assets) || [];
     for (var i = 0; i < assets.length; i++) {
-      if (typeof assets[i].name === "string" && assets[i].name.slice(-DMG_SUFFIX.length) === DMG_SUFFIX) {
+      if (typeof assets[i].name === "string" && assets[i].name.slice(-suffix.length) === suffix) {
         return assets[i];
       }
     }
     return null;
+  }
+
+  /** 訪問者の OS と CPU。Windows の ARM は User-Agent に出ないので、Client Hints で訊く。 */
+  function detectPlatform() {
+    var ua = navigator.userAgent || "";
+    var uad = navigator.userAgentData;
+    var plat = (uad && uad.platform) || navigator.platform || "";
+    if (/Win/i.test(plat) || /Windows/.test(ua)) {
+      if (uad && typeof uad.getHighEntropyValues === "function") {
+        return uad.getHighEntropyValues(["architecture"]).then(function (v) {
+          return v && v.architecture === "arm" ? "winArm64" : "winX64";
+        }).catch(function () { return "winX64"; });
+      }
+      return Promise.resolve(/ARM64|aarch64/i.test(ua) ? "winArm64" : "winX64");
+    }
+    if (/Mac/i.test(plat) || /Mac OS X/.test(ua)) return Promise.resolve("mac");
+    return Promise.resolve(null);
   }
 
   /** github.com / その CDN 以外の URL は張らない。 */
@@ -169,28 +192,41 @@
 
   // ── index.html ───────────────────────────────────────────────────────
 
-  function enhanceDownload(releases) {
+  function enhanceDownload(releases, platform) {
     var btn = document.getElementById("download-primary");
     var meta = document.getElementById("download-meta");
     if (!btn) return;
 
     if (!releases.length) {
-      // **今日の状態。** エラーではなく、別の状態として扱う。
       btn.textContent = T("dl.none", "No public build yet");
-      if (meta) meta.textContent = T("dl.first", "The first release will be v0.1.0.");
       return;
     }
     var latest = releases[0];
-    var asset = dmgAsset(latest);
-    var url = asset && safeUrl(asset.browser_download_url);
-    if (!url) {
-      if (meta) meta.textContent = T("dl.latestOnly", "Latest release: {tag}", { tag: latest.tag_name });
+    var ids = { mac: "dl-mac", winX64: "dl-win-x64", winArm64: "dl-win-arm64" };
+    var found = {};
+    for (var key in ASSETS) {
+      var asset = assetBySuffix(latest, ASSETS[key].suffix);
+      var url = asset && safeUrl(asset.browser_download_url);
+      if (!url) continue;
+      found[key] = { asset: asset, url: url };
+      var link = document.getElementById(ids[key]);
+      if (link) {
+        link.href = url;
+        link.title = asset.name + " · " + fmtSize(asset.size);
+      }
+    }
+    var mine = platform && found[platform];
+    if (!mine) {
+      // 分からない OS（Linux・スマホ）: 主ボタンはリリースのページのまま。版だけ出す。
+      if (meta) meta.textContent = T("dl.latestOnly", "Latest: {tag} · {date} · macOS (Apple Silicon) · Windows (x64 & ARM64)", {
+        tag: latest.tag_name, date: fmtDate(latest.published_at),
+      });
       return;
     }
-    btn.href = url;
-    btn.textContent = T("dl.latest", "Download dopamine {tag}", { tag: latest.tag_name });
+    btn.href = mine.url;
+    btn.textContent = T("dl.for", "Download for {os}", { os: ASSETS[platform].label });
     if (meta) {
-      meta.textContent = [asset.name, fmtSize(asset.size), fmtDate(latest.published_at)]
+      meta.textContent = [latest.tag_name, fmtSize(mine.asset.size), fmtDate(latest.published_at)]
         .filter(Boolean).join(" · ");
     }
   }
@@ -215,7 +251,7 @@
     releases.forEach(function (r) {
       var li = document.createElement("li");
       var art = document.createElement("article");
-      art.className = "card";
+      art.className = "release";
 
       var head = document.createElement("div");
       head.className = "release__head";
@@ -251,15 +287,18 @@
       }
       art.appendChild(notes);
 
-      var asset = dmgAsset(r);
-      var url = asset && safeUrl(asset.browser_download_url);
-      if (url) {
+      var dls = document.createElement("p");
+      dls.className = "release__dls";
+      for (var key in ASSETS) {
+        var asset = assetBySuffix(r, ASSETS[key].suffix);
+        var url = asset && safeUrl(asset.browser_download_url);
+        if (!url) continue;
         var a = document.createElement("a");
-        a.className = "release__dl";
         a.href = url;
-        a.textContent = "↓ " + asset.name + " (" + fmtSize(asset.size) + ")";
-        art.appendChild(a);
+        a.textContent = "↓ " + ASSETS[key].label + " (" + fmtSize(asset.size) + ")";
+        dls.appendChild(a);
       }
+      if (dls.firstChild) art.appendChild(dls);
       li.appendChild(art);
       list.appendChild(li);
     });
@@ -301,9 +340,9 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     wireCopyButtons();
-    loadReleases().then(function (releases) {
-      enhanceDownload(releases);
-      renderReleaseList(releases);
+    Promise.all([loadReleases(), detectPlatform()]).then(function (got) {
+      enhanceDownload(got[0], got[1]);
+      renderReleaseList(got[0]);
     }).catch(function (err) {
       if (window.console) console.warn("[dopamine] release info unavailable:", err);
       degrade();

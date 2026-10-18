@@ -1,8 +1,8 @@
 <div align="center">
   <img src="assets/dopamine.png" width="128" alt="dopamine">
   <h1>dopamine</h1>
-  <p>A macOS desktop browser built on gpui — split a space into web pages,<br>
-     a terminal, a file browser, and RSS.</p>
+  <p>A browser, a terminal, an editor and your files — side by side in one window.<br>
+     For macOS (Apple Silicon) and Windows (x64 &amp; ARM64).</p>
   <p><b><a href="https://route23.github.io/dopamine-releases/">route23.github.io/dopamine-releases</a></b></p>
 </div>
 
@@ -13,13 +13,15 @@ Builds are published here as Releases; the site under `/` is served by GitHub Pa
 
 ### Editing the website
 
-`index.html` and `assets/i18n.js` are **generated** — edit the English / Japanese text in
-`tools/content.py`, then run `python3 tools/gen.py`. `releases.html`, `assets/styles.css`,
-`assets/site.js` (language switch, lightbox) and `assets/app.js` (release data from the GitHub API)
-are hand-written. Screenshots live in `assets/shots/` as WebP. Append `?lang=ja` / `?lang=en` to a URL
-to force a language.
+Every file is hand-written and English only: `index.html`, `releases.html`, `404.html`,
+`assets/styles.css`, `assets/site.js` (screenshot lightbox) and `assets/app.js` (release data from
+the GitHub API, and which download fits the visitor's OS). The three screenshots live in
+`assets/shots/` as WebP. The look follows the app's launch screen: Instrument Serif and its four
+colours — black `#000000`, blue `#3E43FF`, rust `#AF3816`, white `#FFFFFF`.
 
 ## Install
+
+### macOS (Apple Silicon, macOS 14+)
 
 ```sh
 brew install --cask Route23/tap/dopamine
@@ -38,10 +40,19 @@ xattr -dr com.apple.quarantine /Applications/dopamine.app
 
 Installing with Homebrew does this for you.
 
+### Windows (10 or 11, x64 or ARM64)
+
+Download `dopamine_<version>_x64-setup.exe` (most PCs) or `dopamine_<version>_arm64-setup.exe`
+(Windows on ARM) from [the latest release](https://github.com/Route23/dopamine-releases/releases/latest)
+and run it. It installs for your user only and needs no administrator rights.
+
+The installer is not code-signed yet, so SmartScreen may say "Windows protected your PC" —
+choose **More info**, then **Run anyway**.
+
 ## Requirements
 
-- macOS 14 (Sonoma) or later
-- Apple Silicon (arm64) only — there is no Intel build
+- macOS 14 (Sonoma) or later on Apple Silicon — there is no Intel Mac build
+- Windows 10 or 11 on x64 or ARM64 (Microsoft Edge WebView2, which Windows already includes)
 
 ## Bugs and requests
 
@@ -49,8 +60,8 @@ Installing with Homebrew does this for you.
 
 ## Working on the site
 
-The site is plain HTML, CSS, and one script — **no build step, no dependencies,
-no CDN**. Edit the files and push; GitHub Pages serves `main` at the repo root.
+The site is plain HTML, CSS, and two small scripts — **no build step, no dependencies**.
+The only outside request besides the GitHub API is the Instrument Serif font from Google Fonts. Edit the files and push; GitHub Pages serves `main` at the repo root.
 
 Preview it the way it is actually served (from the *parent* directory, so the
 `/dopamine-releases/` subpath is reproduced — a root-absolute `/assets/…` path
