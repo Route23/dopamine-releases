@@ -1,16 +1,16 @@
 /* Dopamine — distribution site (#1110 / dopamine#1110)
  *
  * 起動画面の空気に合わせる: フォントは Instrument Serif だけ（コードだけ等幅）、
- * 色は起動画面の 4 色だけ（crates/core/src/launch_dither.rs の LAUNCH_PALETTE）。
- * 灰色が要る所は白を透かす。地に起動画面の絵と同じ青と錆の点を薄く散らす。
+ * 色は起動画面の 4 色（crates/core/src/launch_dither.rs の LAUNCH_PALETTE）。ただし文字の白は
+ * 生成りの #DCD6BD（利用者の指定）。灰色が要る所はその文字色を透かす。地に起動画面の絵と同じ青と錆の点を薄く散らす。
  */
 :root {
   --black: #000000;
-  --white: #ffffff;
+  --white: #dcd6bd;
   --red: #af3816;
   --blue: #3e43ff;
-  --soft: rgb(255 255 255 / 0.62);
-  --faint: rgb(255 255 255 / 0.18);
+  --soft: rgb(220 214 189 / 0.62);
+  --faint: rgb(220 214 189 / 0.18);
   --serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
   color-scheme: dark;

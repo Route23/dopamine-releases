@@ -17,7 +17,7 @@ Every file is hand-written and English only: `index.html`, `releases.html`, `404
 `assets/styles.css`, `assets/site.js` (screenshot lightbox) and `assets/app.js` (release data from
 the GitHub API, and which download fits the visitor's OS). The three screenshots live in
 `assets/shots/` as WebP. The look follows the app's launch screen: Instrument Serif and its four
-colours — black `#000000`, blue `#3E43FF`, rust `#AF3816`, white `#FFFFFF`.
+colours — black `#000000`, blue `#3E43FF`, rust `#AF3816` — with text in `#DCD6BD`.
 
 ## Install
 
